@@ -1,0 +1,68 @@
+{
+    "name": "superinteractive/statamic-super-sections",
+    "type": "statamic-addon",
+    "description": "Reusable Blade component support for Statamic Super Sections, pages, articles, and Bard/replicator sets.",
+    "keywords": [
+        "blade",
+        "components",
+        "laravel",
+        "sections",
+        "statamic"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Super Interactive",
+            "email": "hello@superinteractive.com"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "statamic/cms": "^5.0 || ^6.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.24",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^8.36 || ^9.15 || ^10.8 || ^11.0",
+        "pestphp/pest": "^2.36 || ^3.8 || ^4.0",
+        "pestphp/pest-plugin-laravel": "^2.4 || ^3.0 || ^4.0",
+        "phpunit/phpunit": "^10.5 || ^11.5 || ^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SuperInteractive\\StatamicSuperSections\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SuperInteractive\\StatamicSuperSections\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "pint": "vendor/bin/pint",
+        "test": "vendor/bin/pest"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SuperInteractive\\StatamicSuperSections\\ServiceProvider"
+            ]
+        },
+        "statamic": {
+            "name": "Statamic Super Sections",
+            "description": "Reusable Laravel Blade component primitives for Statamic Super Sections rendering."
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "support": {
+        "issues": "https://github.com/superinteractive/statamic-super-sections/issues",
+        "source": "https://github.com/superinteractive/statamic-super-sections"
+    }
+}

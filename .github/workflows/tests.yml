@@ -1,0 +1,63 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pest:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.2'
+            laravel: '^10.48'
+            statamic: '^5.0'
+            testbench: '^8.36'
+            pest: '^2.36'
+            pest_plugin_laravel: '^2.4'
+            phpunit: '^10.5'
+          - php: '8.3'
+            laravel: '^11.44'
+            statamic: '^5.0'
+            testbench: '^9.15'
+            pest: '^3.8'
+            pest_plugin_laravel: '^3.0'
+            phpunit: '^11.5'
+          - php: '8.4'
+            laravel: '^12.40'
+            statamic: '^5.0'
+            testbench: '^10.8'
+            pest: '^3.8'
+            pest_plugin_laravel: '^3.0'
+            phpunit: '^11.5'
+          - php: '8.4'
+            laravel: '^12.40'
+            statamic: '^6.0'
+            testbench: '^10.8'
+            pest: '^4.0'
+            pest_plugin_laravel: '^4.0'
+            phpunit: '^12.0'
+          - php: '8.4'
+            laravel: '^13.0'
+            statamic: '^6.0'
+            testbench: '^11.0'
+            pest: '^4.0'
+            pest_plugin_laravel: '^4.0'
+            phpunit: '^12.0'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - run: composer require --no-update laravel/framework:${{ matrix.laravel }} statamic/cms:${{ matrix.statamic }} orchestra/testbench:${{ matrix.testbench }} pestphp/pest:${{ matrix.pest }} pestphp/pest-plugin-laravel:${{ matrix.pest_plugin_laravel }} phpunit/phpunit:${{ matrix.phpunit }}
+
+      - run: composer update --prefer-dist --no-interaction --no-progress
+
+      - run: composer test
