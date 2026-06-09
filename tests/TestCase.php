@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace SuperInteractive\StatamicSuperSections\Tests;
 
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Statamic\Providers\StatamicServiceProvider;
+use Statamic\Testing\AddonTestCase;
+use SuperInteractive\StatamicSuperSections\ServiceProvider;
 
-abstract class TestCase extends OrchestraTestCase
+abstract class TestCase extends AddonTestCase
 {
-    /**
-     * @return array<int, class-string>
-     */
-    protected function getPackageProviders($app): array
-    {
-        return [
-            StatamicServiceProvider::class,
-        ];
-    }
+    protected string $addonServiceProvider = ServiceProvider::class;
 }

@@ -10,6 +10,35 @@ composer require superinteractive/statamic-super-sections
 
 The addon is discovered automatically by Laravel and Statamic.
 
+## Rendering Sections
+
+Render page and article section rows with the package-provided collection components:
+
+```blade
+<x-super::page-sections :sections="$sections" />
+<x-super::article-sections :sections="$sections" />
+```
+
+Attributes passed to the collection component are applied to the wrapper `<div>`:
+
+```blade
+<x-super::page-sections :sections="$sections" class="space-y-12" />
+```
+
+The `super::` namespace applies only to the package-owned collection wrappers. Individual section components remain app-owned, class-backed Blade components:
+
+```text
+App\View\Components\PageSections\Hero
+App\View\Components\ArticleSections\Text
+```
+
+Child component names stay un-namespaced:
+
+```text
+page-sections.hero
+article-sections.text
+```
+
 ## Local Development
 
 When developing this package with the Super Statamic Starter Kit source app, work from the package repository:
