@@ -39,6 +39,50 @@ page-sections.hero
 article-sections.text
 ```
 
+## Set Preview Images
+
+Statamic 6+ only. On Statamic 5 the package does not change set previews.
+
+Put the preview images in `resources/set-previews/`. Refer to them by filename in the set's `image:` key:
+
+```yaml
+sets:
+  hero:
+    image: hero-page-section.jpg
+```
+
+The package registers a `set_previews` disk with root `resources/set-previews`, unless the project already defines that disk. It also sets `statamic.assets.set_preview_images` to the `set_previews` container. Remove both from the project config. A project cannot override this setting.
+
+The project keeps the container. With the file container driver, put this in the asset containers directory, for example `resources/_statamic/asset-containers/set_previews.yaml`:
+
+```yaml
+title: "Set Previews"
+disk: set_previews
+allow_uploads: false
+allow_downloading: false
+allow_renaming: false
+allow_moving: false
+create_folders: false
+sort_by: basename
+sort_dir: asc
+```
+
+### Eloquent asset driver
+
+When `statamic.eloquent-driver.assets.driver` is `eloquent`, the package replaces the asset repository. Preview images then load from the disk and never need database rows, so do not run `statamic:eloquent:sync-assets` for them. All other containers still use the Eloquent driver. This conflicts with any other addon that also replaces the asset repository.
+
+### File asset driver
+
+Statamic writes metadata files next to the images the first time a preview loads. Add this to `.gitignore`:
+
+```gitignore
+/resources/set-previews/.meta
+```
+
+### Permissions
+
+Every Control Panel user has the `view` ability on files in the preview container, so roles need no `view set_previews assets` permission. `view` also allows viewing a file's details and downloading it, even with `allow_downloading: false`. Users still need `access cp`. All other abilities and containers keep their normal permissions.
+
 ## Local Development
 
 When developing this package with the Super Statamic Starter Kit source app, work from the package repository:
