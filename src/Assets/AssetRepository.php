@@ -11,8 +11,9 @@ use Statamic\Fieldtypes\Sets;
 
 /**
  * Serves set preview images straight from their disk, so they need no database rows.
+ * Projects with their own asset repository extend this class.
  */
-final class AssetRepository extends EloquentAssetRepository
+class AssetRepository extends EloquentAssetRepository
 {
     public function findById($id): ?Asset
     {

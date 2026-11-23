@@ -69,7 +69,20 @@ sort_dir: asc
 
 ### Eloquent asset driver
 
-When `statamic.eloquent-driver.assets.driver` is `eloquent`, the package replaces the asset repository. Preview images then load from the disk and never need database rows, so do not run `statamic:eloquent:sync-assets` for them. All other containers still use the Eloquent driver. This conflicts with any other addon that also replaces the asset repository.
+When `statamic.eloquent-driver.assets.driver` is `eloquent`, the package replaces the Eloquent driver's asset repository. Preview images then load from the disk and never need database rows, so do not run `statamic:eloquent:sync-assets` for them. All other containers still use the Eloquent driver.
+
+The package replaces only the driver's own repository. If the project or another addon binds its own asset repository, the package leaves it in place. Make that repository extend `SuperInteractive\StatamicSuperSections\Assets\AssetRepository`, so preview images still load without database rows:
+
+```php
+use SuperInteractive\StatamicSuperSections\Assets\AssetRepository as SectionsAssetRepository;
+
+class AssetRepository extends SectionsAssetRepository
+{
+    // Project overrides.
+}
+```
+
+A repository that does not extend it serves preview images only when they have database rows.
 
 ### File asset driver
 

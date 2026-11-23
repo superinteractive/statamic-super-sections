@@ -38,7 +38,10 @@ final class ServiceProvider extends AddonServiceProvider
 
         config()->set('statamic.assets.set_preview_images', ['container' => 'set_previews', 'folder' => null]);
 
-        if (config('statamic.eloquent-driver.assets.driver') === 'eloquent' && class_exists(EloquentAssetRepository::class)) {
+        // Replace only the driver's own repository, so a project's or addon's repository stays bound.
+        if (config('statamic.eloquent-driver.assets.driver') === 'eloquent'
+            && class_exists(EloquentAssetRepository::class)
+            && app(AssetRepositoryContract::class)::class === EloquentAssetRepository::class) {
             Statamic::repository(AssetRepositoryContract::class, Assets\AssetRepository::class);
         }
 
