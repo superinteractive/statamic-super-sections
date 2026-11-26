@@ -458,17 +458,8 @@ final class SectionFieldResolver
             return Asset::find($asset);
         }
 
-        $defaultContainerAsset = Asset::find('assets::'.$asset);
-
-        if ($defaultContainerAsset !== null) {
-            return $defaultContainerAsset;
-        }
-
-        if (Str::startsWith($asset, ['/', 'http://', 'https://'])) {
-            return Asset::find($asset) ?? Asset::findByPath($asset);
-        }
-
-        return Asset::findByPath($asset);
+        return Asset::find('assets::'.$asset)
+            ?? (Str::startsWith($asset, ['/', 'http://', 'https://']) ? Asset::find($asset) : null);
     }
 
     private function resolveEntry(mixed $entry): mixed

@@ -324,6 +324,28 @@ it('resolves bare asset filenames from the default assets container', function (
     expect($resolver->singleAsset('avatar.jpg'))->toBe($asset);
 });
 
+it('does not scan every asset when an asset path or url does not resolve', function (): void {
+    $resolver = app(SectionFieldResolver::class);
+
+    Asset::shouldReceive('find')->once()->with('assets::artikelen/missing.jpg')->andReturnNull();
+    Asset::shouldReceive('find')->once()->with('assets::/assets/missing.jpg')->andReturnNull();
+    Asset::shouldReceive('find')->once()->with('/assets/missing.jpg')->andReturnNull();
+    Asset::shouldNotReceive('findByPath', 'all');
+
+    expect($resolver->singleAsset('artikelen/missing.jpg'))->toBeNull()
+        ->and($resolver->assets(['/assets/missing.jpg']))->toHaveCount(0);
+});
+
+it('resolves root-relative paths from the default assets container before trying them as urls', function (): void {
+    $resolver = app(SectionFieldResolver::class);
+
+    $asset = new class {};
+
+    Asset::shouldReceive('find')->once()->with('assets::/artikelen/photo.jpg')->andReturn($asset);
+
+    expect($resolver->singleAsset('/artikelen/photo.jpg'))->toBe($asset);
+});
+
 it('resolves form objects and handles to nullable handle strings', function (): void {
     $resolver = app(SectionFieldResolver::class);
 
